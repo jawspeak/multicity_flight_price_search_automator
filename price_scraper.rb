@@ -14,9 +14,13 @@ end
 
 class PriceScraper
 
-  DATE_RANGE = (Date.new(2011,7,27)..Date.new(2011,8,29))
+  DATE_RANGE = (Date.new(2011,5,27)..Date.new(2011,6,23))
   MIN_DAYS_STAY = 7
   MAX_DAYS_STAY = 13
+  FROM1 = "CHI"
+  TO1 = "shanghai"
+  FROM2 = "shanghai"
+  TO2 = "CHI"
 
   def initialize(driver, filename)
     @filename = filename
@@ -30,7 +34,7 @@ class PriceScraper
       f << %w(airport1 airport2 date1 airport3 airport4 date2 price1 price2 price3)
     end
     dates_for do |date1, date2|
-      search_for("NYC", "XNN", date1, "Kathmandu", "NYC", date2, 0)
+      search_for(FROM1, TO1, date1, FROM2, TO2, date2, 0)
     end
     @driver.quit
   end
@@ -78,6 +82,7 @@ class PriceScraper
       if (attempts > 3)
         @log.error("3 attempts timed out, aborting this search, resume with next. #{e}") 
         save_to_file(airport1, airport2, date1, airport3, airport4, date2, ['error'])
+        return
       end
       @log.warn("Attempt #{attempts}. Exception for #{[airport1, airport2, date1, airport3, airport4, date2]} #{e}")
       search_for(airport1, airport2, date1, airport3, airport4, date2, attempts+1) 
