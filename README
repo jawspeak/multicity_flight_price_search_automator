@@ -1,0 +1,12 @@
+This is an automated price checking tool for multicity flights.
+
+You need to start the selenium server with:
+java -jar selenium-server-standalone-2.0b3.jar
+
+I recommend using rvm to manage your ruby dependencies, at minimum you need:
+gem install selenium-webdriver 
+
+Commence searching with:
+ruby search.rb
+
+Alter the search through the start/end dates or cities that are in the code.
