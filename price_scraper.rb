@@ -14,7 +14,7 @@ end
 
 class PriceScraper
 
-  DATE_RANGE = (Date.new(2011,5,27)..Date.new(2011,8,29))
+  DATE_RANGE = (Date.new(2011,7,27)..Date.new(2011,8,29))
   MIN_DAYS_STAY = 7
   MAX_DAYS_STAY = 13
 
@@ -74,10 +74,10 @@ class PriceScraper
       el = @driver.find_element(:id, 'tfGrid')
       top_4_prices = el.find_elements(:class, 'tfPrice').reduce([]) {|c,i| c << i.find_element(:class, 'perPerson').text.match(/Total \$(.*)/)[1].gsub(',','')}[0...4]
       save_to_file(airport1, airport2, date1, airport3, airport4, date2, top_4_prices)
-    rescue Selenium::WebDriver::Error::WebDriverError => e
+    rescue Selenium::WebDriver::Error::WebDriverError, Timeout::Error => e
       if (attempts > 3)
         @log.error("3 attempts timed out, aborting this search, resume with next. #{e}") 
-        save_error_file('error')
+        save_to_file(airport1, airport2, date1, airport3, airport4, date2, ['error'])
       end
       @log.warn("Attempt #{attempts}. Exception for #{[airport1, airport2, date1, airport3, airport4, date2]} #{e}")
       search_for(airport1, airport2, date1, airport3, airport4, date2, attempts+1) 
@@ -91,14 +91,10 @@ class PriceScraper
     end
   end
 
-  def save_error_file(error)
-    CSV.open(@filename, 'a') {|f| f << [error]}
-  end
-
   def wait_for_results_page_to_load
     (1..30).each do 
-      sleep(1)
       break if @driver.title.match(/Travelocity.*Outbound.*Search.*Results/)
+      sleep(0.5)
     end
     sleep(0.5) # try to prevent timeouts
   end

@@ -1,12 +1,17 @@
 This is an automated price checking tool for multicity flights.
 
-You need to start the selenium server with:
-java -jar selenium-server-standalone-2.0b3.jar
+GETTING STARTED:
+Start the selenium server with:
+ java -jar selenium-server-standalone-2.0b3.jar
 
-I recommend using rvm to manage your ruby dependencies, at minimum you need:
-gem install selenium-webdriver 
+I recommend using rvm to manage your ruby dependencies, at minimum you need: 
+ gem install selenium-webdriver 
 
-Commence searching with:
-ruby search.rb
+Edit what you will search in this file, and then run it:
+ ruby price_scraper.rb
 
-Alter the search through the start/end dates or cities that are in the code.
+
+
+TODO LIST
+- precreate the script of what routes to search to a file. Then work down that list when writing out the data. If an error happens, allow restarting from where you left off. (OR, just re-fetch the error rows in the csv).
+- handle describing travel options in a YAML format, (multiple origin/destinations, multi city or round trip, and __?__ what else?)
